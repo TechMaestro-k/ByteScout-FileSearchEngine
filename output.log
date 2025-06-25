@@ -1,0 +1,19 @@
+DEBUG: Calling read_sizes
+DEBUG: lineCounter = 3, maxLength = 51
+DEBUG: read_sizes succeeded. lineCounter = 3, maxLength = 51
+DEBUG: Mymap initialized
+DEBUG: Calling read_input
+DEBUG: Read line 0: 0 hello my name is kushagra
+
+DEBUG: Inserting line 0: 0 hello my name is kushagra
+DEBUG: Inserted line 0: 0 hello my name is kushagra
+DEBUG: Read line 1: 1 welcome to my very first project 
+
+DEBUG: Inserting line 1: 1 welcome to my very first project 
+DEBUG: Inserted line 1: 1 welcome to my very first project 
+DEBUG: Read line 2: 2 I am creating a search engine as my first project
+DEBUG: Inserting line 2: 2 I am creating a search engine as my first project
+DEBUG: Inserted line 2: 2 I am creating a search engine as my first projec
+DEBUG: read_input succeeded
+initialization finished
+LineCounter : 3 MaxLength :51
