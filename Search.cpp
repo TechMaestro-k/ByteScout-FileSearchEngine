@@ -16,17 +16,19 @@ void search(char* token, TrieNode* trie, Mymap* map, int k) {
         }
         cout << "Debug: Processing token: " << token << endl;
         strcpy(warray[i], token);
-        IDF[i] = log10((double)map->getSize() - (double)trie->dsearchword(token, 0) + 0.5) /
-                 ((double)trie->dsearchword(token, 0) + 0.5);
+        IDF[i] = log10((double)map->getSize() - (double)trie->dsearchword(warray[i], 0) + 0.5) /
+                 ((double)trie->dsearchword(warray[i], 0) + 0.5);
         trie->search(warray[i], 0, scorelist);
         token = strtok(NULL, " \t\n");
     }
     double avgdl = 0;
     for (int m = 0; m < map->getSize(); m++) {
-        avgdl += map->getLength(m);
+        avgdl +=(double)map->getLength(m);
     }
     avgdl /= (double)map->getSize();
     cout << "Debug: Average document length: " << avgdl << endl;
+
+    //correct 
     double score = 0;
     Scorelist* tempList = scorelist;
     Maxheap* heap = new Maxheap(k);
@@ -35,49 +37,49 @@ void search(char* token, TrieNode* trie, Mymap* map, int k) {
         for (int l = 0; l < i; l++) {
             score = IDF[l] * ((double)trie->tfsearchword(tempList->getid(), warray[l], 0) * (k1 + 1.0)) /
                     ((double)trie->tfsearchword(tempList->getid(), warray[l], 0) +
-                     k1 * (1.0 - b + b * ((double)map->getLength(tempList->getid()) / (double)avgdl)));
+                     k1 * (1.0 - b + b * (double)map->getLength(tempList->getid()) / (double)avgdl));
             heap->insert(score, tempList->getid());
             score = 0;
             tempList = tempList->getnext();
             ceil++;
         }
+        cout << "after for loop" << endl;
         if (ceil > k) ceil = k;
         struct winsize w;
         ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-        if (w.ws_col <= 0) {
-            cout << "Error: Invalid window size" << endl;
-            break;
-        }
+        // if (w.ws_col <= 0) {
+        //     cout << "Error: Invalid window size" << endl;
+        //     break;
+        // }
         for (int l = 0; l < ceil; l++) {
-            int id = heap->getid();
-            if (id == -1) break;
-            double score = (double)heap->remove();
-            cout << "Debug: Processing document ID: " << id << ", score: " << score << endl;
-            char* line = (char*)malloc(map->getBufferSize() * sizeof(char));
-            char* document = map->getDocument(id);
-            if (document == NULL) {
-                cout << "Error: Document not found for ID " << id << endl;
-                free(line);
-                continue;
+            int id=heap->getid();
+            if(id==-1) break;
+            double score=(double)heap->remove();
+            cout << "(" << id;
+            int x=10;
+            int f=1;
+            cout << "enterd loop"<< endl;
+            while(id/x!=0){
+                x*=10;
+                f++;
             }
-            strcpy(line, document);
+            while(5-f>=0){
+                cout << " ";
+                f++;
+            }
+            printf(")[%10.6f]",score);
+            char* line=(char*)malloc(map->getBufferSize()*sizeof(char));
+            strcpy(line,map->getDocument(id));
             char* temp;
-            temp = strtok(line, " \t\n");
-            if (temp == NULL) {
-                cout << "Error: Failed to tokenize document" << endl;
-                free(line);
-                continue;
-            }
-            int currlength = 0;
-            int counter = 0;
-            int newline = 0;
-            int lineflag = 0;
-            int** underline = (int**)malloc(2 * sizeof(int*));
-            underline[0] = (int*)malloc(100 * sizeof(int));
-            underline[1] = (int*)malloc(100 * sizeof(int));
-            int ucounter = 0;
+            temp=strtok(line," \t\n");
+            int currlength=0;
+            int counter=0;
+            int newline=0;
+            int lineflag=0;
+            int underline[2][100];
+            int ucounter=0;
+            
             while (temp != NULL) {
-                cout << "Debug: Processing word: " << temp << endl;
                 if (newline) {
                     currlength += 20;
                     if (counter != 0) {
@@ -87,35 +89,51 @@ void search(char* token, TrieNode* trie, Mymap* map, int k) {
                     }
                     newline = 0;
                 }
+            
                 for (int n = 0; n < i; n++) {
                     if (!strcmp(warray[n], temp)) {
-                        underline[0][ucounter] = currlength; // Start position
-                        underline[1][ucounter] = strlen(temp); // Length
-                        ucounter++;
-                        lineflag = 1;
+                        if (currlength + strlen(temp) + 1 <= w.ws_col) {
+                            underline[0][ucounter] = currlength;
+                            underline[1][ucounter] = strlen(temp);
+                            ucounter++;
+                            lineflag = 1;
+                        }
                         break;
                     }
                 }
+                cout << "after for loop" << endl;
                 currlength += strlen(temp) + 1;
+                cout << "Debug: temp = " << (temp ? temp : "NULL") << endl;
+                cout << "Debug: currlength = " << currlength << endl;
+                cout << "Debug: w.ws_col = " << w.ws_col << endl;
+            
                 if (currlength - 1 >= w.ws_col) {
+                    cout << "enter if state" << endl;
                     currlength = 0;
                     newline = 1;
                     cout << endl;
                     if (lineflag) {
                         char* outputline = (char*)malloc((w.ws_col + 1) * sizeof(char));
+                        if (outputline == NULL) {
+                            cout << "Error: Failed to allocate memory for outputline" << endl;
+                            return;
+                        }
                         for (int j = 0; j < w.ws_col; j++) {
+                            cout << "enter for loop1" << endl;
                             outputline[j] = ' ';
                         }
                         outputline[w.ws_col] = '\0';
+                        lineflag = 0;
                         for (int j = 0; j < ucounter; j++) {
-                            for (int v = underline[0][j]; v < underline[0][j] + underline[1][j]; v++) {
-                                outputline[v] = '^';
+                            cout << "enr for loop2" << endl;
+                            for (int k = underline[0][j]; k < underline[0][j] + underline[1][j]; k++) {
+                                cout << "enr for loop3" << endl;
+                                outputline[k] = '^';
                             }
                         }
-                        cout << outputline << endl;
-                        free(outputline);
                         ucounter = 0;
-                        lineflag = 0;
+                        cout << outputline;
+                        free(outputline);
                     }
                     continue;
                 }
@@ -125,12 +143,9 @@ void search(char* token, TrieNode* trie, Mymap* map, int k) {
             }
             cout << endl;
             free(line);
-            free(underline[0]);
-            free(underline[1]);
-            free(underline);
         }
-        delete heap;
-        delete scorelist;
+        delete(heap);
+        delete(scorelist);
         cout << endl;
     }
 }
