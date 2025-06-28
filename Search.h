@@ -1,15 +1,16 @@
-#include<iostream>
-#include<cstdlib>
-#include<cstring>
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
 #include "Trienode.h"
 #include "Map.h"
-#include<math.h>
-#include "scorelist.h"
+#include "cmath"
+#include "Scorelist.h"
 #include "Maxheap.h"
-#include<sys/ioctl.h>
-#include<unistd.h>
+#include "sys/ioctl.h"
+#include <unistd.h>
 
+using namespace std;
 
-void search(char* token,TrieNode* trie, Mymap *map, int k);
-void df(TrieNode* trie);
-int tf(char* token,TrieNode* trie);
+void search(char* token, Trienode* trie, Mymap* map, int k);
+void df(Trienode* trie);
+int tf(char* token, Trienode* trie);

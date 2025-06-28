@@ -1,51 +1,43 @@
 #include "Listnode.h"
 
-listnode::~listnode() {
-    // Destructor to clean up the linked list
-    if (next != NULL) {
-        delete(next);
+Listnode::~Listnode(){
+    if(next!=NULL){
+        delete next;
     }
 }
 
-void listnode::add(int did) {
-    if(did == id){
+void Listnode::add(int d_id){
+    if(d_id==id){
         times++;
     }
-    else{
-        if(next==NULL){
-            next=new listnode(did);
-        }
-        else{
-            next->add(did);
-        }
+    else {
+        if(next==NULL)
+            next = new Listnode(d_id);
+        next->add(d_id);
+    
     }
 }
 
-int listnode::search(int did) {
-    if (id == did) {
+int Listnode::search(int d_id){
+    if(d_id==id)
         return times;
-    } 
     else{
-        if (next == NULL) {
+        if(next==NULL)
             return 0;
-        } 
-        else {
-            return next->search(did);
-        }
+        return next->search(d_id);
     }
+} 
+
+int Listnode::volume(){
+    if(next==NULL)
+        return 1;
+    else
+        return 1 + next->volume();
 }
 
-
-int listnode::volume() {
-    if (next != NULL) {
-        return 1 + next->volume();; // Count this node and recurse
-    } else {
-        return 1; //count this node
-    }
-}
-
-void listnode::passdocuments(Scorelist* scorelist) {
+void Listnode::passdocument(Scorelist* scorelist){
+    
     scorelist->insert(id);
     if(next!=NULL)
-        next->passdocuments(scorelist);
+        next->passdocument(scorelist);
 }

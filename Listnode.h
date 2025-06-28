@@ -1,21 +1,21 @@
-#include<iostream>
-#include<cstdlib>
-#include<cstring>
-#include "scorelist.h"
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include "Scorelist.h"
 
 #ifndef LISTNODE_H
 #define LISTNODE_H
-using namespace std;
-class listnode{
-    listnode* next;   //next list items
-    int id;           //id of document
-    int times;        //how many times in the specific document
+class Listnode{
+    Listnode* next; //next list item
+    int id; // document id
+    int times=0; //times the word appears in the document
 public:
-    listnode(int did):id(did), times(0){next=NULL;}
-    ~listnode();
-    void add(int did); 
-    int search(int did);
+    Listnode(int d_id):id(d_id),times(0){next=NULL;}
+    ~Listnode();
+
+    void add(int d_id);
+    int search(int d_id);
     int volume();
-    void passdocuments(Scorelist* scorelist) ;
+    void passdocument(Scorelist* scorelist);
 };
 #endif

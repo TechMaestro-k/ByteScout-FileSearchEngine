@@ -1,25 +1,25 @@
 #include<iostream>
-#include<cstdlib>
+#include <cstdlib>
 #include<cstring>
+
 using namespace std;
 
-#ifndef MAP_H   /* Ensure the header is included only once matlab ki ye class  wapis initialize na ho agar ek baar ho chuki hai to*/
+#ifndef MAP_H
 #define MAP_H
-class Mymap
-{
-    int size;    //the number of documents
-    int buffersize;   //the length of the biggest document
-    char** documents;  //each document
-    int* lengths;   //length of each document
-public:
-    Mymap(int size,int buffersize);
-    ~Mymap();
-    int insert(char* line,int index);
-    void setLength(int id, int length) { lengths[id] = length; }
-    int getLength(int id) { return lengths[id]; }
-    void print(int i){cout << i << ": " << documents[i] << endl; }
-    char* getDocument(int i) { return documents[i]; }
-    const int getSize() { return size; }  
-    const int getBufferSize() { return buffersize; }
+class Mymap{
+    int size; //no of docs
+    int buffersize; //length of largest doc
+    char** documents; //each doc
+    int* lengths; //length of each doc
+    public:
+        Mymap(int size, int buffersize);
+        ~Mymap();
+        int insert(char* line, int i);
+        void setlength(int id, int length){lengths[id]=length;}
+        int getlength(int id){return lengths[id];}
+        void print(int i){cout<<i<< " "<<documents[i]<<endl;}
+        char *getdocument(int i){return documents[i];}
+        const int getsize(){return size;}
+        const int getbuffersize(){return buffersize;}
 };
-#endif // MAP_H
+#endif
