@@ -8,8 +8,8 @@ A file search engine in C++ using Tries, List Node and Priority Queue
 ### Initializing
 
 ```console
-$ git clone https://github.com/TechMaestro-k/SearchEngine.git
-$ cd SearchEngine/
+$ git clone https://github.com/TechMaestro-k/ByteScout-FileSearchEngine.git
+$ cd ByteScout-FileSearchEngine./
 $ make
 ```
 
