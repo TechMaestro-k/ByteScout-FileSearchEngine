@@ -1,5 +1,5 @@
-# search_system
-A search engine in C++ using Tries, List Node and Priority Queue
+# ByteScout - File Search Engine
+A file search engine in C++ using Tries, List Node and Priority Queue
 
 ## 💻 Installation
 
