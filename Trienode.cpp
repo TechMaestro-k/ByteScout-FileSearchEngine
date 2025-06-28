@@ -49,8 +49,10 @@ void Trienode::dsearchall(char* buffer, int curr){
         cout<<buffer<<" "<<list->volume()<<endl;
     if(child!=NULL)
         child->dsearchall(buffer,curr+1);
-    if(sibling!=NULL)
+    if(sibling!=NULL){
         sibling->dsearchall(buffer,curr);
+    }
+        
     
     buffer[curr]='\0';
 }

@@ -144,9 +144,8 @@ void search(char* token, Trienode* trie, Mymap* map, int k){
 void df(Trienode* trie){
     
     char* token = strtok(NULL, " \t\n");
-    if(token!=NULL){
+    if(token!=NULL)
         cout<<token<<" "<<trie->dfsearchword(token,0)<<endl;
-    }
     else{
         char* buffer = (char*)malloc(sizeof(char)*256);
         trie->dsearchall(buffer,0);

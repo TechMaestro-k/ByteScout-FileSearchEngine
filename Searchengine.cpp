@@ -56,9 +56,8 @@ int main(int argc, char **argv){
     while(1){
         getline(&input, &inputlength, stdin);
         int ret = inputmanager(input, trie,mymap, k);
-        if(ret==-1){
+        if(ret==-1)
             cout<<"Wrong input"<<endl;
-        }
         else if(ret==2){
             free(input);
             break;
